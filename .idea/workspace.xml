@@ -4,7 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="38718690-758a-4203-882e-0334b1d9c817" name="Default Changelist" comment="" />
+    <list default="true" id="38718690-758a-4203-882e-0334b1d9c817" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/final/src/main/resources/healthcare-dataset-stroke-data.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final/src/main/scala/CSVreader.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/final/.idea/modules/final.iml" beforeDir="false" afterPath="$PROJECT_DIR$/final/.idea/modules/final.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/final/build.sbt" beforeDir="false" afterPath="$PROJECT_DIR$/final/build.sbt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/final/project/target/scala-2.12/sbt-1.0/update/update_cache_2.12/output" beforeDir="false" afterPath="$PROJECT_DIR$/final/project/target/scala-2.12/sbt-1.0/update/update_cache_2.12/output" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/final/target/scala-2.12/update/update_cache_2.12/inputs" beforeDir="false" afterPath="$PROJECT_DIR$/final/target/scala-2.12/update/update_cache_2.12/inputs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/final/target/scala-2.12/update/update_cache_2.12/output" beforeDir="false" afterPath="$PROJECT_DIR$/final/target/scala-2.12/update/update_cache_2.12/output" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/final/target/streams/_global/_global/csrLogger/_global/streams/out" beforeDir="false" afterPath="$PROJECT_DIR$/final/target/streams/_global/_global/csrLogger/_global/streams/out" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/final/target/streams/_global/dependencyPositions/_global/streams/update_cache_2.12/input_dsp" beforeDir="false" afterPath="$PROJECT_DIR$/final/target/streams/_global/dependencyPositions/_global/streams/update_cache_2.12/input_dsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/final/target/streams/_global/dependencyPositions/_global/streams/update_cache_2.12/output_dsp" beforeDir="false" afterPath="$PROJECT_DIR$/final/target/streams/_global/dependencyPositions/_global/streams/update_cache_2.12/output_dsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/final/target/streams/_global/update/_global/streams/out" beforeDir="false" afterPath="$PROJECT_DIR$/final/target/streams/_global/update/_global/streams/out" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/final/target/streams/_global/updateClassifiers/_global/streams/out" beforeDir="false" afterPath="$PROJECT_DIR$/final/target/streams/_global/updateClassifiers/_global/streams/out" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/final/target/streams/_global/updateClassifiers/_global/streams/update_cache_2.12/inputs" beforeDir="false" afterPath="$PROJECT_DIR$/final/target/streams/_global/updateClassifiers/_global/streams/update_cache_2.12/inputs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/final/target/streams/_global/updateClassifiers/_global/streams/update_cache_2.12/output" beforeDir="false" afterPath="$PROJECT_DIR$/final/target/streams/_global/updateClassifiers/_global/streams/update_cache_2.12/output" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/final/target/streams/compile/externalDependencyClasspath/_global/streams/export" beforeDir="false" afterPath="$PROJECT_DIR$/final/target/streams/compile/externalDependencyClasspath/_global/streams/export" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/final/target/streams/compile/managedClasspath/_global/streams/export" beforeDir="false" afterPath="$PROJECT_DIR$/final/target/streams/compile/managedClasspath/_global/streams/export" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/final/target/streams/runtime/externalDependencyClasspath/_global/streams/export" beforeDir="false" afterPath="$PROJECT_DIR$/final/target/streams/runtime/externalDependencyClasspath/_global/streams/export" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/final/target/streams/runtime/managedClasspath/_global/streams/export" beforeDir="false" afterPath="$PROJECT_DIR$/final/target/streams/runtime/managedClasspath/_global/streams/export" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/final/target/streams/test/externalDependencyClasspath/_global/streams/export" beforeDir="false" afterPath="$PROJECT_DIR$/final/target/streams/test/externalDependencyClasspath/_global/streams/export" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/final/target/streams/test/managedClasspath/_global/streams/export" beforeDir="false" afterPath="$PROJECT_DIR$/final/target/streams/test/managedClasspath/_global/streams/export" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -34,6 +56,11 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="scala_project_settings_configurable.last_selected_tab_index" value="0" />
+    <property name="settings.editor.selected.configurable" value="sbt.project.settings.configurable" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -44,7 +71,15 @@
       <option name="presentableId" value="Default" />
       <updated>1617229381021</updated>
       <workItem from="1617229384710" duration="163000" />
+      <workItem from="1617232875511" duration="45000" />
+      <workItem from="1618452309692" duration="611000" />
+      <workItem from="1618452992845" duration="209000" />
+      <workItem from="1618453215799" duration="144000" />
     </task>
     <servers />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
