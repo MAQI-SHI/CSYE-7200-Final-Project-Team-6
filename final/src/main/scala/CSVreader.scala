@@ -10,16 +10,22 @@ class CSVreader {
 }
 object Prediction{
   def main(args: Array[String]): Unit = {
+    //create spark object
     val spark = SparkSession.builder()
           .appName("RandomForest")
           .master("local[2]")
           .getOrCreate()
-    val healthdata = spark.read.format("csv")
+    //get data from csv file
+    val healthData = spark.read.format("csv")
       .option("header", "true")
       .option("inferSchema", "true")
       .load("src/main/resources/healthcare-dataset-stroke-data.csv")
-    healthdata.printSchema()
-    healthdata.show()
-
+    //healthData.printSchema()
+    //healthData.show()
+    //Identify the identity column and index column of the entire data set
+    val labelIndexer = new StringIndexer()
+           .setInputCol("label")
+           .setOutputCol("indexedLabel")
+           .fit(healthData)
   }
 }
