@@ -1,6 +1,6 @@
 
 import org.apache.spark.ml.Pipeline
-import org.apache.spark.ml.classification.{RandomForestClassificationModel, RandomForestClassifier}
+import org.apache.spark.ml.classification.{DecisionTreeClassificationModel, RandomForestClassificationModel, RandomForestClassifier}
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 import org.apache.spark.ml.feature.{IndexToString, StringIndexer, VectorAssembler, VectorIndexer}
 class CSVreader{
@@ -35,21 +35,25 @@ object Prediction{
       .setOutputCol("indexedMarried")
       .setHandleInvalid("keep")
       .fit(healthData)
+
     val indexedWork = new StringIndexer()
       .setInputCol("work_type")
       .setOutputCol("indexedWork")
       .setHandleInvalid("keep")
       .fit(healthData)
+
     val indexedResidence = new StringIndexer()
       .setInputCol("Residence_type")
       .setOutputCol("indexedResidence")
       .setHandleInvalid("keep")
       .fit(healthData)
+
     val indexedSmoking = new StringIndexer()
       .setInputCol("smoking_status")
       .setOutputCol("indexedSmoking")
       .setHandleInvalid("keep")
       .fit(healthData)
+
     val featureCols = Array("indexedGender","age","hypertension","heart_disease","avg_glucose_level")
     //设置树的最大层次
     val featureIndexer = new VectorAssembler()
@@ -57,12 +61,14 @@ object Prediction{
           .setOutputCol("indexedFeatures")
           .setHandleInvalid("keep")
     //featureIndexer.transform(healthData).show()
+
     val labelIndexer = new StringIndexer()
       .setInputCol("stroke")
       .setOutputCol("iLabel")
       .setHandleInvalid("keep")
       .fit(healthData)
     healthData.show()
+
     //拆分数据为训练集和测试集（7:3）
     val Array(trainingData, testData) = healthData.randomSplit(Array(0.7, 0.3))
     //testData.show(5)
@@ -86,3 +92,7 @@ object Prediction{
 
   }
 }
+
+
+
+
