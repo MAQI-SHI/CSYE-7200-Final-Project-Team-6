@@ -1,1 +1,0 @@
-{"class":"org.apache.spark.ml.feature.VectorAssembler","timestamp":1618782641966,"sparkVersion":"2.4.0","uid":"vecAssembler_5a68cf8fd2ca","paramMap":{"outputCol":"indexedFeatures","handleInvalid":"keep","inputCols":["age","hypertension","indexedWork","agl2","bmi2","indexedSmoking"]},"defaultParamMap":{"outputCol":"vecAssembler_5a68cf8fd2ca__output","handleInvalid":"error"}}
