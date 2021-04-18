@@ -18,7 +18,7 @@ object Prediction{
     val healthData = spark.read.format("csv")
       .option("header", "true")
       .option("inferSchema", "true")
-      .load("src/main/resources/healthcare-dataset-stroke-data.csv")
+      .load("src/main/resources/train_strokes.csv")
     //healthData.printSchema()
     //healthData.show()
     //Identify the identity column and index column of the entire data set
@@ -50,7 +50,10 @@ object Prediction{
       .setOutputCol("indexedSmoking")
       .setHandleInvalid("keep")
       .fit(healthData)
-    val featureCols = Array("indexedGender","age","hypertension","heart_disease","avg_glucose_level")
+    val featureCols = Array("indexedGender","indexedMarried","indexedResidence","indexedSmoking","indexedWork","age",
+      "hypertension","heart_disease","avg_glucose_level","bmi")
+    /*val featureCols = Array("age",
+      "hypertension","heart_disease","avg_glucose_level")*/
     //设置树的最大层次
     val featureIndexer = new VectorAssembler()
           .setInputCols(featureCols)
@@ -64,9 +67,20 @@ object Prediction{
       .fit(healthData)
     healthData.show()
     //拆分数据为训练集和测试集（7:3）
-    val Array(trainingData, testData) = healthData.randomSplit(Array(0.7, 0.3))
-    //testData.show(5)
+    /*healthData.createOrReplaceTempView("pos")
 
+    val postive = spark.sql("select * from pos where stroke = 1")
+    val nagetive = spark.sql("select * from pos where stroke = 0")
+
+    val Array(trainingDatap, testDatap) = postive.randomSplit(Array(0.7, 0.3))
+    val Array(trainingDatan, testDatan) = nagetive.randomSplit(Array(0.7, 0.3))
+    testDatan.show(5)
+    testDatap.show(5)
+    val trainingData = trainingDatap.union(trainingDatan)
+    val testData = testDatap.union(testDatan)*/
+    println(1)
+    //testData.show(5)
+    println(2)
 
     //创建模型
     val randomForest = new RandomForestClassifier()
@@ -76,13 +90,35 @@ object Prediction{
 
     //使用管道运行转换器和随机森林算法
     val pipeline = new Pipeline()
-        .setStages(Array(labelIndexer,indexedGender,featureIndexer,randomForest))
+      .setStages(Array(labelIndexer,
+        featureIndexer,
+        randomForest))
+    //,indexedGender,indexedMarried,indexedResidence,indexedSmoking,indexedWork,
+    val pipeline = new Pipeline()
+        .setStages(Array(labelIndexer,
+          featureIndexer,
+          randomForest))
     //训练模型
     val model = pipeline.fit(trainingData)
+    trainingData.show(5)
     //预测
     val predictions = model.transform(testData)
+    testData.show(5)
     //输出预测结果
-    predictions.select("iLabel", "probability","prediction").show(false)
+    predictions.select("iLabel", "probability","prediction").show(30,false)
 
+    predictions.createOrReplaceTempView("p")
+
+    val a = spark.sql("select * from p where iLabel = 1")
+    a.show()
+    val evaluator = new MulticlassClassificationEvaluator()
+      .setLabelCol("iLabel")
+      .setPredictionCol("prediction")
+      .setMetricName("accuracy")
+
+    val accuracy = evaluator.evaluate(predictions)
+    val b = evaluator.evaluate(a)
+    println(s"stroke accuracy = ${b}")
+    println(s"accuracy = ${accuracy}")
   }
 }
