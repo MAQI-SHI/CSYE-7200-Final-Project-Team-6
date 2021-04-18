@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-[debug] not up to date. inChanged = false, force = false
+[debug] not up to date. inChanged = true, force = false
 [debug] Updating ProjectRef(uri("file:/D:/MyCode/CSYE-7200-Final-Project-Team-6/final/project/"), "final-build")...
 [debug] Done updating ProjectRef(uri("file:/D:/MyCode/CSYE-7200-Final-Project-Team-6/final/project/"), "final-build")
-=======
-[debug] not up to date. inChanged = true, force = false
-[debug] Updating ProjectRef(uri("file:/Users/captainsmokey/Workspace_csye7200/CSYE-7200-Project/CSYE-7200-Final-Project-Team-6/final/project/"), "final-build")...
-[debug] Done updating ProjectRef(uri("file:/Users/captainsmokey/Workspace_csye7200/CSYE-7200-Project/CSYE-7200-Final-Project-Team-6/final/project/"), "final-build")
->>>>>>> 1bb95271dabfd9d0218af716175c943c2d1ae281

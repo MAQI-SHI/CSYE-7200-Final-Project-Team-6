@@ -1,4 +1,4 @@
-import org.apache.spark.ml.feature.{StringIndexer, VectorAssembler}
+import org.apache.spark.ml.feature.{Imputer, StringIndexer, VectorAssembler}
 import org.apache.spark.ml.xx
 import org.apache.spark.ml.linalg._
 import org.apache.spark.rdd.RDD
@@ -12,9 +12,9 @@ import scala.util.Random
  * Description :
  */
 object ImbalancedDataProcess {
-
-  //def main(args: Array[String]): Unit = {
   def getData={
+  //def main(args: Array[String]): Unit = {
+
     val spark: SparkSession = SparkSession.builder().appName("test-lightgbm").master("local[4]").getOrCreate()
     spark.sparkContext.setLogLevel("WARN")
     val originalData: DataFrame = spark.read.option("header", "true") //第一行作为Schema
@@ -22,7 +22,7 @@ object ImbalancedDataProcess {
       //      .csv("/home/hdfs/hour.csv")
       .csv("src/main/resources/train_strokes.csv")
 
-    val kNei = 4
+    val kNei = 5
     val nNei = 10
     //少数样本值
     val minSample = 1
@@ -35,42 +35,39 @@ object ImbalancedDataProcess {
       .setHandleInvalid("keep")
       .fit(originalData)
     val a = indexedWork.transform(originalData)
-    val indexedResidence = new StringIndexer()
-      .setInputCol("Residence_type")
-      .setOutputCol("indexedResidence")
-      .setHandleInvalid("keep")
-      .fit(a)
-    val b = indexedResidence.transform(a)
-    val new_data = b.na.fill(value="never smoked",Array("smoking_status"))
+    val new_data = a.na.fill(value="never smoked",Array("smoking_status"))
+    val imputer = new Imputer()
+      .setInputCols(Array("bmi","avg_glucose_level"))
+      .setOutputCols(Array("bmi2","agl2"))
+      .setStrategy("mean")
+
+    val data2 = imputer.fit(new_data).transform(new_data)
+    data2.show()
     //new_data.show()
     val indexedSmoking = new StringIndexer()
       .setInputCol("smoking_status")
       .setOutputCol("indexedSmoking")
       .setHandleInvalid("keep")
-      .fit(new_data)
-    val c = indexedSmoking.transform(new_data)
-    val indexedGender = new StringIndexer()
-      .setInputCol("gender")
-      .setOutputCol("indexedGender")
-      .setHandleInvalid("keep")
-      .fit(c)
+      .fit(data2)
+    val c = indexedSmoking.transform(data2)
     val indexedMarried= new StringIndexer()
       .setInputCol("ever_married")
       .setOutputCol("indexedMarried")
       .setHandleInvalid("keep")
       .fit(c)
-    val d = indexedGender.transform(c)
-    val e = indexedMarried.transform(d)
+    val e = indexedMarried.transform(c)
     //e.show(5)
-    val h = e.drop("id","gender","ever_married","work_type","Residence_type","smoking_status")
-    //h.show()
+    val h = e.drop("gender","ever_married","work_type","Residence_type","smoking_status")
+    h.show()
     // 连续列
-    val vecCols: Array[String] = Array("indexedWork", "indexedResidence", "avg_glucose_level", "bmi")
-
+    /*val vecCols: Array[String] = Array("age","hypertension","heart_disease","indexedMarried","indexedWork",
+      "indexedSmoking", "avg_glucose_level", "bmi")*/
+    val vecCols: Array[String] = Array("age", "hypertension","indexedWork","agl2",
+      "bmi2","indexedSmoking")
     import spark.implicits._
     //原始数据只保留label和features列，追加一列sign标识为老数据
     val inputDF = h.select(labelCol, vecCols: _*).withColumn("sign", lit("O"))
-    //inputDF.show()
+    //inputDF.show(5)
     //需要对最小样本值的数据处理
     val filteredDF = inputDF.filter($"$labelCol" === minSample)
       //filteredDF.show()
@@ -80,7 +77,7 @@ object ImbalancedDataProcess {
       .setOutputCol("features")
       .setHandleInvalid("keep")
       .transform(filteredDF).select("features")
-    //labelAndVecDF.show()
+    labelAndVecDF.show()
     //转为rdd
     val inputRDD = labelAndVecDF.rdd.map(_.getAs[Vector](0)).repartition(10)
 
@@ -91,10 +88,12 @@ object ImbalancedDataProcess {
     //以下是公司要求的和之前数据合并
     //生成dataframe，将向量列展开，追加一列sign标识为新数据
     val vecDF: DataFrame = vecRDD.map(vec => (1, vec.toArray)).toDF(labelCol, "features")
+    println(1)
     val newCols = (0 until vecCols.size).map(i => $"features".getItem(i).alias(vecCols(i)))
+    println(2)
     //根据需求，新数据应该为样本量*n，当前测试数据label为0的样本量为5514，则会新增5514*10=55140
     val newDF = vecDF.select(($"$labelCol" +: newCols): _*).withColumn("sign", lit("N"))
-    //newDF.show()
+    newDF.show()
     //和原数据合并
     val finalDF = inputDF.union(newDF)
     finalDF.show
