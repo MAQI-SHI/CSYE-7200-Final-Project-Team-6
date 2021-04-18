@@ -1,6 +1,6 @@
 
 import org.apache.spark.ml.Pipeline
-import org.apache.spark.ml.classification.{RandomForestClassificationModel, RandomForestClassifier}
+import org.apache.spark.ml.classification.{DecisionTreeClassificationModel, RandomForestClassificationModel, RandomForestClassifier}
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 import org.apache.spark.ml.feature.{IndexToString, StringIndexer, VectorAssembler, VectorIndexer}
 class CSVreader{
@@ -35,39 +35,45 @@ object Prediction{
       .setOutputCol("indexedMarried")
       .setHandleInvalid("keep")
       .fit(healthData)
+
     val indexedWork = new StringIndexer()
       .setInputCol("work_type")
       .setOutputCol("indexedWork")
       .setHandleInvalid("keep")
       .fit(healthData)
+
     val indexedResidence = new StringIndexer()
       .setInputCol("Residence_type")
       .setOutputCol("indexedResidence")
       .setHandleInvalid("keep")
       .fit(healthData)
+
     val indexedSmoking = new StringIndexer()
       .setInputCol("smoking_status")
       .setOutputCol("indexedSmoking")
       .setHandleInvalid("keep")
       .fit(healthData)
+
     val featureCols = Array("indexedGender","indexedMarried","indexedResidence","indexedSmoking","indexedWork","age",
       "hypertension","heart_disease","avg_glucose_level","bmi")
     /*val featureCols = Array("age",
       "hypertension","heart_disease","avg_glucose_level")*/
+
     //设置树的最大层次
     val featureIndexer = new VectorAssembler()
           .setInputCols(featureCols)
           .setOutputCol("indexedFeatures")
           .setHandleInvalid("keep")
     //featureIndexer.transform(healthData).show()
+
     val labelIndexer = new StringIndexer()
       .setInputCol("stroke")
       .setOutputCol("iLabel")
       .setHandleInvalid("keep")
       .fit(healthData)
-    healthData.show()
+
     //拆分数据为训练集和测试集（7:3）
-    /*healthData.createOrReplaceTempView("pos")
+    healthData.createOrReplaceTempView("pos")
 
     val postive = spark.sql("select * from pos where stroke = 1")
     val nagetive = spark.sql("select * from pos where stroke = 0")
@@ -77,10 +83,10 @@ object Prediction{
     testDatan.show(5)
     testDatap.show(5)
     val trainingData = trainingDatap.union(trainingDatan)
-    val testData = testDatap.union(testDatan)*/
-    println(1)
+    val testData = testDatap.union(testDatan)
+
     //testData.show(5)
-    println(2)
+
 
     //创建模型
     val randomForest = new RandomForestClassifier()
@@ -89,13 +95,13 @@ object Prediction{
       .setNumTrees(10)
 
     //使用管道运行转换器和随机森林算法
-    val pipeline = new Pipeline()
+    /*val pipeline = new Pipeline()
       .setStages(Array(labelIndexer,
         featureIndexer,
-        randomForest))
-    //,indexedGender,indexedMarried,indexedResidence,indexedSmoking,indexedWork,
+        randomForest))*/
+
     val pipeline = new Pipeline()
-        .setStages(Array(labelIndexer,
+        .setStages(Array(labelIndexer,indexedGender,indexedMarried,indexedResidence,indexedSmoking,indexedWork,
           featureIndexer,
           randomForest))
     //训练模型
@@ -122,3 +128,7 @@ object Prediction{
     println(s"accuracy = ${accuracy}")
   }
 }
+
+
+
+
