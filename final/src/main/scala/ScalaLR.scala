@@ -1,8 +1,10 @@
 
 import org.apache.spark.SparkConf
+import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.feature.{StringIndexer, VectorAssembler}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.ml.classification.LogisticRegression
+import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 
 class ScalaLR{
 
@@ -11,64 +13,72 @@ class ScalaLR{
 object logic {
 
   def main(args: Array[String]): Unit = {
-    val conf = new SparkConf().setMaster("local[*]").setAppName("logic")
-    val spark = SparkSession.builder().config(conf).getOrCreate()
+    val spark = SparkSession.builder()
+      .appName("LR")
+      .master("local[2]")
+      .getOrCreate()
 
-    val data = spark.read.format("csv")
-      .option("header", "true")
-      .option("inferSchema", "true")
-      .load("src/main/resources/healthcare-dataset-stroke-data.csv")
+    val healthData = ImbalancedDataProcess.getData
 
-    val indexedGender = new StringIndexer()
-      .setInputCol("gender")
-      .setOutputCol("indexedGender")
+    val featureCols = Array("indexedResidence","indexedWork",
+      "avg_glucose_level","bmi")
+
+    val featureIndexer = new VectorAssembler()
+      .setInputCols(featureCols)
+      .setOutputCol("indexedFeatures")
       .setHandleInvalid("keep")
-      .fit(data)
+    //featureIndexer.transform(healthData).show()
 
-    val indexedMarried= new StringIndexer()
-      .setInputCol("ever_married")
-      .setOutputCol("indexedMarried")
+    val labelIndexer = new StringIndexer()
+      .setInputCol("stroke")
+      .setOutputCol("iLabel")
       .setHandleInvalid("keep")
-      .fit(data)
+      .fit(healthData)
 
-    val indexedWork = new StringIndexer()
-      .setInputCol("work_type")
-      .setOutputCol("indexedWork")
-      .setHandleInvalid("keep")
-      .fit(data)
+    healthData.createOrReplaceTempView("pos")
 
-    val indexedResidence = new StringIndexer()
-      .setInputCol("Residence_type")
-      .setOutputCol("indexedResidence")
-      .setHandleInvalid("keep")
-      .fit(data)
+    val postive = spark.sql("select * from pos where stroke = 1")
+    val nagetive = spark.sql("select * from pos where stroke = 0")
 
-    val indexedSmoking = new StringIndexer()
-      .setInputCol("smoking_status")
-      .setOutputCol("indexedSmoking")
-      .setHandleInvalid("keep")
-      .fit(data)
-
-    val assembler = new VectorAssembler()
-      .setInputCols(Array("id", "gender", "age", "hypertension", "heart_disease", "ever_married", "work_type", "Residence_type", "avg_glucose_level", "bmi", "smoking_status", "stroke"))
-      .setOutputCol("features")
-
-    val Array(training, test) = data.randomSplit(Array(0.7, 0.3))
+    val Array(trainingDatap, testDatap) = postive.randomSplit(Array(0.7, 0.3))
+    val Array(trainingDatan, testDatan) = nagetive.randomSplit(Array(0.7, 0.3))
+    testDatan.show(5)
+    testDatap.show(5)
+    val trainingData = trainingDatap.union(trainingDatan)
+    val testData = testDatap.union(testDatan)
 
     val lr = new LogisticRegression()
       .setMaxIter(10)
       .setRegParam(0.3)
       .setElasticNetParam(0.8)
-      .setLabelCol("Result")
+      .setLabelCol("iLabel")
+      .setFeaturesCol("indexedFeatures")
 
-    val trainData = assembler.transform(training)
-    val testData = assembler.transform(test)
+    val pipeline = new Pipeline()
+      .setStages(Array(labelIndexer, featureIndexer, lr))
+
+    val model = pipeline.fit(trainingData)
+    model.write.overwrite().save("./lrModel")
 
     // Fit the model
-    val lrModel = lr.fit(trainData)
+    val predictions = model.transform(testData)
 
-    val accuracy = lrModel.evaluate(testData).accuracy
-    print(accuracy)
+    predictions.createOrReplaceTempView("p")
+
+    val isStroke = spark.sql("select * from p where iLabel = 1")
+    val notStroke = spark.sql("select * from p where iLabel = 0")
+
+    val evaluator = new MulticlassClassificationEvaluator()
+      .setLabelCol("iLabel")
+      .setPredictionCol("prediction")
+      .setMetricName("accuracy")
+
+    val accuracy = evaluator.evaluate(predictions)
+    val isStrokeAccuracy = evaluator.evaluate(isStroke)
+    val notStrokeAccuracy = evaluator.evaluate(notStroke)
+    println(s"stroke accuracy = ${isStrokeAccuracy}")
+    println(s"not stroke accuracy = ${notStrokeAccuracy}")
+    println(s"accuracy = ${accuracy}")
   }
 }
 
