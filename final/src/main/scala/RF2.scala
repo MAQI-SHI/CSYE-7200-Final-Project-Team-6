@@ -70,7 +70,7 @@ object RF2{
 
     //训练模型
     val model = pipeline.fit(trainingData)
-    //model.save("./rfModel")
+    model.write.overwrite().save("./rfModel")
     //trainingData.show(5)
     //预测
     val predictions = model.transform(testData)
