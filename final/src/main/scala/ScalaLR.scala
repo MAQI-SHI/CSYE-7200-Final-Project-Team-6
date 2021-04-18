@@ -20,8 +20,8 @@ object logic {
 
     val healthData = ImbalancedDataProcess.getData
 
-    val featureCols = Array("indexedResidence","indexedWork",
-      "avg_glucose_level","bmi")
+    val featureCols = Array("age","hypertension","indexedWork",
+      "agl2","bmi2","indexedSmoking")
 
     val featureIndexer = new VectorAssembler()
       .setInputCols(featureCols)
