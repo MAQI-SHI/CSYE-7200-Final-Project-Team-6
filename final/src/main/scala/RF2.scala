@@ -18,8 +18,8 @@ object RF2{
     //healthData.show()
     //Identify the identity column and index column of the entire data set
 
-    val featureCols = Array("indexedResidence","indexedWork",
-      "avg_glucose_level","bmi")
+    val featureCols = Array("age","hypertension","indexedWork",
+      "agl2","bmi2","indexedSmoking")
     /*val featureCols = Array("age",
       "hypertension","heart_disease","avg_glucose_level")*/
 
