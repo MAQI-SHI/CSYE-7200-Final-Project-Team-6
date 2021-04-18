@@ -83,7 +83,6 @@ object ImbalancedDataProcess {
     //labelAndVecDF.show()
     //转为rdd
     val inputRDD = labelAndVecDF.rdd.map(_.getAs[Vector](0)).repartition(10)
-    println(3)
 
     //smote算法
     val vecRDD: RDD[Vector] = smote(inputRDD, kNei, nNei)
