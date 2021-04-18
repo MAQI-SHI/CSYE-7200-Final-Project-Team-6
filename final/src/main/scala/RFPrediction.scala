@@ -1,13 +1,10 @@
-
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.classification.{DecisionTreeClassificationModel, RandomForestClassificationModel, RandomForestClassifier}
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 import org.apache.spark.ml.feature.{IndexToString, StringIndexer, VectorAssembler, VectorIndexer}
-class CSVreader{
 
-}
 import org.apache.spark.sql.SparkSession
-object Prediction{
+object RFPrediction{
   def main(args: Array[String]): Unit = {
     //create spark object
     val spark = SparkSession.builder()

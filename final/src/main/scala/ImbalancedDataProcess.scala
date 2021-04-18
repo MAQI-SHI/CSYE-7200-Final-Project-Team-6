@@ -1,6 +1,3 @@
-class ImbData {
-
-}
 import org.apache.spark.ml.feature.{StringIndexer, VectorAssembler}
 import org.apache.spark.ml.xx
 import org.apache.spark.ml.linalg._
