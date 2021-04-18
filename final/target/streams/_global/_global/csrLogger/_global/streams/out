@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+[debug] downloaded https://repo1.maven.org/maven2/com/github/soul/soul_2.12/1.0.0/soul_2.12-1.0.0.pom
+[debug] downloaded https://repo1.maven.org/maven2/com/github/soul/soul_2.12/1.0.0/soul_2.12-1.0.0.pom.sha1
+=======
 [debug] downloaded https://repo1.maven.org/maven2/org/apache/spark/spark-sql_2.12/2.4.0/spark-sql_2.12-2.4.0.pom
 [debug] downloaded https://repo1.maven.org/maven2/org/apache/spark/spark-streaming_2.12/2.4.0/spark-streaming_2.12-2.4.0.pom
 [debug] downloaded https://repo1.maven.org/maven2/org/apache/spark/spark-streaming-kafka-0-10_2.12/2.4.0/spark-streaming-kafka-0-10_2.12-2.4.0.pom
@@ -808,3 +812,4 @@
 [debug] downloaded https://repo1.maven.org/maven2/org/apache/spark/spark-mllib-local_2.12/2.4.0/spark-mllib-local_2.12-2.4.0-javadoc.jar.sha1
 [debug] downloaded https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-common/2.6.5/hadoop-common-2.6.5-javadoc.jar
 [debug] downloaded https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-hdfs/2.6.5/hadoop-hdfs-2.6.5-javadoc.jar
+>>>>>>> 1bb95271dabfd9d0218af716175c943c2d1ae281
