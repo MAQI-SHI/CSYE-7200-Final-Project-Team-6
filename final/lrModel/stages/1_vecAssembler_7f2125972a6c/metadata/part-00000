@@ -1,1 +1,0 @@
-{"class":"org.apache.spark.ml.feature.VectorAssembler","timestamp":1618780731682,"sparkVersion":"2.4.0","uid":"vecAssembler_7f2125972a6c","paramMap":{"outputCol":"indexedFeatures","handleInvalid":"keep","inputCols":["indexedResidence","indexedWork","avg_glucose_level","bmi"]},"defaultParamMap":{"outputCol":"vecAssembler_7f2125972a6c__output","handleInvalid":"error"}}
