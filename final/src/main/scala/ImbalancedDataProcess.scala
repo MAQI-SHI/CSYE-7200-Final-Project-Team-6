@@ -15,8 +15,8 @@ object ImbalancedDataProcess {
       .option("inferSchema", "true") //推测schema类型
       //      .csv("/home/hdfs/hour.csv")
       .csv("src/main/resources/train_strokes.csv")
-    originalData
-  }*/
+    originalData*/
+  //}
   //def main(args: Array[String]): Unit = {
 
     val spark: SparkSession = SparkSession.builder().appName("test-lightgbm").master("local[4]").getOrCreate()
@@ -73,7 +73,7 @@ object ImbalancedDataProcess {
 
     //drop useless column
     val h = e.drop("gender","ever_married","work_type","Residence_type","smoking_status")
-    h.show()
+    //h.show()
 
 
     /*val vecCols: Array[String] = Array("age","hypertension","heart_disease","indexedMarried","indexedWork",
@@ -93,7 +93,7 @@ object ImbalancedDataProcess {
       .setOutputCol("features")
       .setHandleInvalid("keep")
       .transform(filteredDF).select("features")
-    labelAndVecDF.show()
+    //labelAndVecDF.show()
     //转为rdd
     val inputRDD = labelAndVecDF.rdd.map(_.getAs[Vector](0)).repartition(10)
 
@@ -109,9 +109,16 @@ object ImbalancedDataProcess {
     println(2)
     //根据需求，新数据应该为样本量*n，当前测试数据label为0的样本量为5514，则会新增5514*10=55140
     val newDF = vecDF.select(($"$labelCol" +: newCols): _*).withColumn("sign", lit("N"))
-    newDF.show()
+    //newDF.show(5)
+    import org.apache.spark.sql.types._
+
+    newDF.createOrReplaceTempView("newDF")
+    val newDF2 = spark.sql("SELECT stroke, CAST(age AS DECIMAL(10,0)) , CAST(hypertension AS DECIMAL(10,0)), " +
+      "CAST(indexedWork AS DECIMAL(10,0)), CAST(agl2 AS DECIMAL(10,2)), CAST(bmi2 AS DECIMAL(10,2)), " +
+      "CAST(indexedSmoking AS DECIMAL(10,0)), sign FROM newDF")
+    //newDF2.show()
     //和原数据合并
-    val finalDF = inputDF.union(newDF)
+    val finalDF = inputDF.union(newDF2)
     finalDF.show
 
     import scala.collection.JavaConversions._
