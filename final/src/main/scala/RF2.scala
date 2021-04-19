@@ -41,7 +41,7 @@ object RF2{
 
     val postive = spark.sql("select * from pos where stroke = 1")
     val nagetive = spark.sql("select * from pos where stroke = 0")
-
+    val real = spark.sql("select * from pos where stroke = 1 and sign = '0'")
     val Array(trainingDatap, testDatap) = postive.randomSplit(Array(0.7, 0.3))
     val Array(trainingDatan, testDatan) = nagetive.randomSplit(Array(0.7, 0.3))
     testDatan.show(5)
@@ -82,7 +82,7 @@ object RF2{
     //spark.sql("select distinct work_type, indexedwork from p")
 
     val isStroke = spark.sql("select * from p where iLabel = 1")
-    val right = spark.sql("select * from p where iLabel = 1 and prediction = 1 and sign = 'N'")
+    val right = spark.sql("select * from p where iLabel = 1 and prediction = 1 and sign = 'O'")
     right.show()
     val notStroke = spark.sql("select * from p where iLabel = 0")
 

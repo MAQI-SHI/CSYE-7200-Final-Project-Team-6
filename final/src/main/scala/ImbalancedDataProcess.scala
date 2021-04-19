@@ -9,15 +9,15 @@ import scala.util.Random
 
 object ImbalancedDataProcess {
   def getData={
-    val spark: SparkSession = SparkSession.builder().appName("test-lightgbm").master("local[4]").getOrCreate()
+    /*val spark: SparkSession = SparkSession.builder().appName("test-lightgbm").master("local[4]").getOrCreate()
     spark.sparkContext.setLogLevel("WARN")
     val originalData: DataFrame = spark.read.option("header", "true") //第一行作为Schema
       .option("inferSchema", "true") //推测schema类型
       //      .csv("/home/hdfs/hour.csv")
       .csv("src/main/resources/train_strokes.csv")
-    originalData
-  }
-  def main(args: Array[String]): Unit = {
+    originalData*/
+  //}
+  //def main(args: Array[String]): Unit = {
 
     val spark: SparkSession = SparkSession.builder().appName("test-lightgbm").master("local[4]").getOrCreate()
     spark.sparkContext.setLogLevel("WARN")
