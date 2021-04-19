@@ -82,6 +82,8 @@ object RF2{
     //spark.sql("select distinct work_type, indexedwork from p")
 
     val isStroke = spark.sql("select * from p where iLabel = 1")
+    val right = spark.sql("select * from p where iLabel = 1 and prediction = 1 and sign = 'N'")
+    right.show()
     val notStroke = spark.sql("select * from p where iLabel = 0")
 
     val evaluator = new MulticlassClassificationEvaluator()
