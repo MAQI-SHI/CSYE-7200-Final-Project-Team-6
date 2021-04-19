@@ -7,7 +7,7 @@ import scala.util.control.Breaks.{break, breakable}
 import java.util.Date
 object PredictionApp extends App {
   val spark = SparkSession.builder()
-    .appName("RandomForest")
+    .appName("PredictionApp")
     .master("local[2]")
     .getOrCreate()
   val model = PipelineModel.load("./rfModel")
@@ -18,22 +18,23 @@ object PredictionApp extends App {
       val condition = scala.io.StdIn.readInt()
       if (condition == 1) {
         println("Please input your age:")
-        val age = scala.io.StdIn.readInt()
+        val age = scala.io.StdIn.readDouble()
 
         println("Please input 1 if your have hypertension or 0 don't have hypertension:")
-        val hyp = scala.io.StdIn.readInt()
+        val hyp = scala.io.StdIn.readDouble()
 
-        println("Please input 1 if your have hypertension or 0 don't have hypertension:")
-        val work = scala.io.StdIn.readInt()
+        println("Please input your work_type,0 for Private, 1 for Self-employed, 2 for children, 3 for Govt_job, 4 " +
+          "for Never_worked:")
+        val work = scala.io.StdIn.readDouble()
 
-        println("Please input 1 if your have hypertension or 0 don't have hypertension:")
-        val agl2 = scala.io.StdIn.readInt()
+        println("Please input your avg_glucose_level:")
+        val agl2 = scala.io.StdIn.readDouble()
 
-        println("Please input 1 if your have hypertension or 0 don't have hypertension:")
-        val bmi = scala.io.StdIn.readInt()
+        println("Please input your bmi:")
+        val bmi = scala.io.StdIn.readDouble()
 
-        println("Please input 1 if your have hypertension or 0 don't have hypertension:")
-        val smo = scala.io.StdIn.readInt()
+        println("Please input your smoking_status, 0 for never smoked, 1 for formerly smoked, 2 for smokes:")
+        val smo = scala.io.StdIn.readDouble()
         /**
          * Timestamp to record the start time of predicting system*/
         val prev = new Date()
