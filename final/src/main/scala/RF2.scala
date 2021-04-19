@@ -79,6 +79,7 @@ object RF2{
     predictions.select("iLabel", "probability","prediction").show(30,false)
 
     predictions.createOrReplaceTempView("p")
+    //spark.sql("select distinct work_type, indexedwork from p")
 
     val isStroke = spark.sql("select * from p where iLabel = 1")
     val notStroke = spark.sql("select * from p where iLabel = 0")

@@ -7,12 +7,16 @@ import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 
 import scala.util.Random
 
-/**
- * Created By TheBigBlue on 2020/3/23
- * Description :
- */
 object ImbalancedDataProcess {
   def getData={
+    /*val spark: SparkSession = SparkSession.builder().appName("test-lightgbm").master("local[4]").getOrCreate()
+    spark.sparkContext.setLogLevel("WARN")
+    val originalData: DataFrame = spark.read.option("header", "true") //第一行作为Schema
+      .option("inferSchema", "true") //推测schema类型
+      //      .csv("/home/hdfs/hour.csv")
+      .csv("src/main/resources/train_strokes.csv")
+    originalData
+  }*/
   //def main(args: Array[String]): Unit = {
 
     val spark: SparkSession = SparkSession.builder().appName("test-lightgbm").master("local[4]").getOrCreate()
@@ -21,20 +25,25 @@ object ImbalancedDataProcess {
       .option("inferSchema", "true") //推测schema类型
       //      .csv("/home/hdfs/hour.csv")
       .csv("src/main/resources/train_strokes.csv")
-
+    //k refers to the k nearest neighbor with the closest Euclidean distance,
+    // But only one of the nearest neighbors is randomly selected, and based on this,
+    // n new samples are selected on this line.
     val kNei = 5
     val nNei = 10
-    //少数样本值
+    //Minority sample value
     val minSample = 1
-    //标签列
+    //label column
     val labelCol = "stroke"
 
+    //map String type to double
     val indexedWork = new StringIndexer()
       .setInputCol("work_type")
       .setOutputCol("indexedWork")
       .setHandleInvalid("keep")
       .fit(originalData)
     val a = indexedWork.transform(originalData)
+    /*a.createOrReplaceTempView("p")
+    spark.sql("select distinct work_type, indexedwork from p").show()*/
     val new_data = a.na.fill(value="never smoked",Array("smoking_status"))
     val imputer = new Imputer()
       .setInputCols(Array("bmi","avg_glucose_level"))
@@ -42,7 +51,7 @@ object ImbalancedDataProcess {
       .setStrategy("mean")
 
     val data2 = imputer.fit(new_data).transform(new_data)
-    data2.show()
+    //data2.show()
     //new_data.show()
     val indexedSmoking = new StringIndexer()
       .setInputCol("smoking_status")
@@ -50,6 +59,10 @@ object ImbalancedDataProcess {
       .setHandleInvalid("keep")
       .fit(data2)
     val c = indexedSmoking.transform(data2)
+
+    /*c.createOrReplaceTempView("p")
+    spark.sql("select distinct smoking_status, indexedSmoking from p").show()*/
+
     val indexedMarried= new StringIndexer()
       .setInputCol("ever_married")
       .setOutputCol("indexedMarried")
@@ -57,9 +70,12 @@ object ImbalancedDataProcess {
       .fit(c)
     val e = indexedMarried.transform(c)
     //e.show(5)
+
+    //drop useless column
     val h = e.drop("gender","ever_married","work_type","Residence_type","smoking_status")
     h.show()
-    // 连续列
+
+
     /*val vecCols: Array[String] = Array("age","hypertension","heart_disease","indexedMarried","indexedWork",
       "indexedSmoking", "avg_glucose_level", "bmi")*/
     val vecCols: Array[String] = Array("age", "hypertension","indexedWork","agl2",
