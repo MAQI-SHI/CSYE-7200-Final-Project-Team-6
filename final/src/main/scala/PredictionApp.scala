@@ -11,7 +11,6 @@ object PredictionApp extends App {
     .master("local[2]")
     .getOrCreate()
   val model = PipelineModel.load("./rfModel")
-  //val Array(trainingData, testData) = ImbalancedDataProcess.getData.randomSplit(Array(0.9, 0.1))
   breakable {
     while (true) {
       println("Press 1 to predict, else will close the app.")
