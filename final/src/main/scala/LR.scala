@@ -1,17 +1,10 @@
-
-import org.apache.spark.SparkConf
 import org.apache.spark.ml.Pipeline
-import org.apache.spark.ml.feature.{StringIndexer, VectorAssembler}
-import org.apache.spark.sql.SparkSession
 import org.apache.spark.ml.classification.LogisticRegression
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
+import org.apache.spark.ml.feature.{StringIndexer, VectorAssembler}
+import org.apache.spark.sql.SparkSession
 
-class ScalaLR{
-
-}
-
-object logic {
-
+object LR {
   def main(args: Array[String]): Unit = {
     val spark = SparkSession.builder()
       .appName("LR")
@@ -20,18 +13,16 @@ object logic {
 
     val healthData = ImbalancedDataProcess.getData
 
-    val featureCols = Array("age","hypertension","indexedWork",
-      "agl2","bmi2","indexedSmoking")
+    val featureCols = Array("age","hypertension","indexedWork", "agl2","bmi2","indexedSmoking")
 
     val featureIndexer = new VectorAssembler()
       .setInputCols(featureCols)
       .setOutputCol("indexedFeatures")
       .setHandleInvalid("keep")
-    //featureIndexer.transform(healthData).show()
 
     val labelIndexer = new StringIndexer()
       .setInputCol("stroke")
-      .setOutputCol("iLabel")
+      .setOutputCol("indexedLabel")
       .setHandleInvalid("keep")
       .fit(healthData)
 
@@ -42,8 +33,11 @@ object logic {
 
     val Array(trainingDatap, testDatap) = postive.randomSplit(Array(0.7, 0.3))
     val Array(trainingDatan, testDatan) = nagetive.randomSplit(Array(0.7, 0.3))
+
+
     testDatan.show(5)
     testDatap.show(5)
+
     val trainingData = trainingDatap.union(trainingDatan)
     val testData = testDatap.union(testDatan)
 
@@ -51,7 +45,7 @@ object logic {
       .setMaxIter(10)
       .setRegParam(0.3)
       .setElasticNetParam(0.8)
-      .setLabelCol("iLabel")
+      .setLabelCol("indexedLabel")
       .setFeaturesCol("indexedFeatures")
 
     val pipeline = new Pipeline()
@@ -65,11 +59,15 @@ object logic {
 
     predictions.createOrReplaceTempView("p")
 
-    val isStroke = spark.sql("select * from p where iLabel = 1")
-    val notStroke = spark.sql("select * from p where iLabel = 0")
+    predictions.select("indexedLabel", "probability", "prediction").show(30,false)
+
+    val isStroke = spark.sql("select * from p where indexedLabel = 1")
+    val notStroke = spark.sql("select * from p where indexedLabel = 0")
+    val right = spark.sql("select * from p where indexedLabel = 1 and prediction = 1 and sign = 'O'")
+    right.show()
 
     val evaluator = new MulticlassClassificationEvaluator()
-      .setLabelCol("iLabel")
+      .setLabelCol("indexedLabel")
       .setPredictionCol("prediction")
       .setMetricName("accuracy")
 
@@ -81,7 +79,3 @@ object logic {
     println(s"accuracy = ${accuracy}")
   }
 }
-
-
-
-
