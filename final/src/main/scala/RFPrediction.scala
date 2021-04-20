@@ -17,10 +17,7 @@ object RFPrediction{
       .option("header", "true")
       .option("inferSchema", "true")
       .load("src/main/resources/train_strokes.csv")
-    //healthData.printSchema()
-    //healthData.show()
-    //Identify the identity column and index column of the entire data set
-    //val StringCols = Array()
+    //map String type to double type
     val indexedGender = new StringIndexer()
             .setInputCol("gender")
             .setOutputCol("indexedGender")
@@ -54,15 +51,10 @@ object RFPrediction{
 
     val featureCols = Array("indexedGender","indexedMarried","indexedResidence","indexedSmoking","indexedWork","age",
       "hypertension","heart_disease","avg_glucose_level","bmi")
-    /*val featureCols = Array("age",
-      "hypertension","heart_disease","avg_glucose_level")*/
-
-    //设置树的最大层次
     val featureIndexer = new VectorAssembler()
           .setInputCols(featureCols)
           .setOutputCol("indexedFeatures")
           .setHandleInvalid("keep")
-    //featureIndexer.transform(healthData).show()
 
     val labelIndexer = new StringIndexer()
       .setInputCol("stroke")
@@ -70,9 +62,9 @@ object RFPrediction{
       .setHandleInvalid("keep")
       .fit(healthData)
 
-    //拆分数据为训练集和测试集（7:3）
+    //Split data into training set and test set (7:3)
     healthData.createOrReplaceTempView("pos")
-
+    //select data from stroke and not stroke separately
     val postive = spark.sql("select * from pos where stroke = 1")
     val nagetive = spark.sql("select * from pos where stroke = 0")
 
@@ -83,36 +75,28 @@ object RFPrediction{
     val trainingData = trainingDatap.union(trainingDatan)
     val testData = testDatap.union(testDatan)
 
-    //testData.show(5)
-
-
-    //创建模型
+    //create model
     val randomForest = new RandomForestClassifier()
       .setLabelCol("iLabel")
       .setFeaturesCol("indexedFeatures")
       .setNumTrees(10)
 
-    //使用管道运行转换器和随机森林算法
-    /*val pipeline = new Pipeline()
-      .setStages(Array(labelIndexer,
-        featureIndexer,
-        randomForest))*/
-
+    //use pipeline and randomForest algorithm
     val pipeline = new Pipeline()
         .setStages(Array(labelIndexer,indexedGender,indexedMarried,indexedResidence,indexedSmoking,indexedWork,
           featureIndexer,
           randomForest))
-    //训练模型
+    //train model
     val model = pipeline.fit(trainingData)
     trainingData.show(5)
-    //预测
+    //test model
     val predictions = model.transform(testData)
     testData.show(5)
-    //输出预测结果
+    //print predict result
     predictions.select("iLabel", "probability","prediction").show(30,false)
 
     predictions.createOrReplaceTempView("p")
-
+    //Calculate the prediction accuracy of stroke and non-stroke separately
     val a = spark.sql("select * from p where iLabel = 1")
     a.show()
     val evaluator = new MulticlassClassificationEvaluator()
