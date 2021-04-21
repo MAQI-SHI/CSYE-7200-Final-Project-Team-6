@@ -5,8 +5,9 @@ import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 import org.apache.spark.ml.feature.{IndexToString, StringIndexer, VectorAssembler, VectorIndexer}
 import org.apache.spark.sql.SparkSession
 
-object DT {
-  def main(args: Array[String]): Unit ={
+
+object DT extends App{
+  def Run()= {
     val spark = SparkSession.builder()
       .appName("RandomForest")
       .master("local[2]")
@@ -55,6 +56,7 @@ object DT {
       .setStages(Array(labelIndexer, featureIndexer, dt, labelConverter))
 
     val model = pipeline.fit(trainingData)
+    model.write.overwrite().save("./dtModel")
 
     val predictions = model.transform(testData)
 
@@ -78,10 +80,7 @@ object DT {
     println(s"stroke accuracy = ${isStrokeAccuracy}")
     println(s"not stroke accuracy = ${notStrokeAccuracy}")
     println(s"accuracy = ${accuracy}")
-//    val accuracy = evaluator.evaluate(predictions)
-//    println("Test Error = " + (1.0 - accuracy))
-//
-//    val treeModel = model.stages(2).asInstanceOf[DecisionTreeClassificationModel]
-//    println("Learned classification tree model:\n" + treeModel.toDebugString)
+
+    accuracy
   }
 }
