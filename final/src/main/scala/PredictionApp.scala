@@ -70,9 +70,9 @@ object PredictionApp extends App {
         val finalRes = predictions.select("prediction").rdd.first().getDouble(0)
 
         if (finalRes == 1.0) {
-          println("You have stroke!")
+          println("You will have stroke!")
         } else {
-          println("You don't have stroke!")
+          println("You will not have stroke!")
         }
       } else {
         break
