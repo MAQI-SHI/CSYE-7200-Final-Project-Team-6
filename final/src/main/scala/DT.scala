@@ -6,7 +6,7 @@ import org.apache.spark.ml.feature.{IndexToString, StringIndexer, VectorAssemble
 import org.apache.spark.sql.SparkSession
 
 object DT {
-  def main(args: Array[String]): Unit = {
+  def main(args: Array[String]): Unit ={
     val spark = SparkSession.builder()
       .appName("RandomForest")
       .master("local[2]")
