@@ -5,8 +5,8 @@ import org.apache.spark.ml.feature.{IndexToString, StringIndexer, VectorAssemble
 import org.apache.spark.sql.SparkSession
 
 
-object RF2{
-  def main(args: Array[String]): Unit = {
+object RF2 extends App{
+  def Run() = {
     //create spark object
     val spark = SparkSession.builder()
       .appName("RandomForest")
@@ -85,5 +85,7 @@ object RF2{
     println(s"stroke accuracy = ${isStrokeAccuracy}")
     println(s"not stroke accuracy = ${notStrokeAccuracy}")
     println(s"accuracy = ${accuracy}")
+    accuracy
   }
+
 }
