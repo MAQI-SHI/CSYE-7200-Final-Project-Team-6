@@ -16,7 +16,9 @@ object Correlaction extends App {
   val originalData: DataFrame = spark.read.option("header", "true")
     .option("inferSchema", "true")
     .csv("src/main/resources/train_strokes.csv")
-
+  /**
+   * map String type to Double type
+   */
   val indexedGender = new StringIndexer()
     .setInputCol("gender")
     .setOutputCol("indexedGender")
@@ -70,6 +72,5 @@ object Correlaction extends App {
    * Compute correlation.
    */
   val correlMatrix = Statistics.corr(rddpreD)
-  println(correlMatrix.toString(10,20))
-
+  println(correlMatrix.toString(10,Int.MaxValue))
 }
