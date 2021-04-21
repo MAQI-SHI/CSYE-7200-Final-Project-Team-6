@@ -6,11 +6,17 @@ import org.apache.spark.sql.SparkSession
 import scala.util.control.Breaks.{break, breakable}
 import java.util.Date
 object PredictionApp extends App {
+  /**
+   * create spark object
+   */
   val spark = SparkSession.builder()
     .appName("PredictionApp")
     .master("local[2]")
     .getOrCreate()
-  val model = PipelineModel.load("./rfModel")
+  /**
+   * choose the model, according to the accuracy, the decision tree is the best model
+   */
+  val model = PipelineModel.load("./dtModel")
   breakable {
     while (true) {
       println("Press 1 to predict, else will close the app.")
