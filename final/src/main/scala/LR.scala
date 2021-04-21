@@ -4,8 +4,8 @@ import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 import org.apache.spark.ml.feature.{StringIndexer, VectorAssembler}
 import org.apache.spark.sql.SparkSession
 
-object LR {
-  def main(args: Array[String]): Unit = {
+object LR extends App{
+  def Run()= {
     val spark = SparkSession.builder()
       .appName("LR")
       .master("local[2]")
@@ -77,5 +77,6 @@ object LR {
     println(s"stroke accuracy = ${isStrokeAccuracy}")
     println(s"not stroke accuracy = ${notStrokeAccuracy}")
     println(s"accuracy = ${accuracy}")
+    accuracy
   }
 }

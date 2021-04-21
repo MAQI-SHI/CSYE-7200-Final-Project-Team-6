@@ -18,6 +18,7 @@ dist/docs/
 target/
 lrModel/
 rfModel/
+dtModel/
 
 *.class
 *.log

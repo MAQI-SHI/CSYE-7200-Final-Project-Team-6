@@ -9,5 +9,6 @@ libraryDependencies += "org.apache.spark" %% "spark-streaming" % "2.4.0"
 libraryDependencies += "org.apache.spark" %% "spark-streaming-kafka-0-10" % "2.4.0"
 libraryDependencies += "org.apache.spark" %% "spark-sql" % "2.4.0"
 libraryDependencies += "org.apache.spark" %% "spark-mllib" % "2.4.0"
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.7" % "test"
 
 

@@ -7,8 +7,8 @@ import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 
 import scala.util.Random
 
-object ImbalancedDataProcess {
-  def getData={
+object ImbalancedDataProcess extends App {
+def getData={
     //create spark
     val spark: SparkSession = SparkSession.builder().appName("test-lightgbm").master("local[4]").getOrCreate()
     spark.sparkContext.setLogLevel("WARN")
@@ -60,8 +60,7 @@ object ImbalancedDataProcess {
     //h.show()
 
     //set feature column
-    val vecCols: Array[String] = Array("age", "hypertension","indexedWork","agl2",
-      "bmi2","indexedSmoking")
+    val vecCols: Array[String] = Array("age", "hypertension","indexedWork","agl2", "bmi2","indexedSmoking")
     import spark.implicits._
     //The original data only retains the label and features columns, and a column of sign is added as the old data
     val inputDF = h.select(labelCol, vecCols: _*).withColumn("sign", lit("O"))
@@ -114,7 +113,7 @@ object ImbalancedDataProcess {
     //println(aggSeq1)
     //return final data
     finalDF
-  }
+}
 
   //smote
   def smote(data: RDD[Vector], k: Int, N: Int): RDD[Vector] = {
