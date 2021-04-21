@@ -16,6 +16,7 @@ class Model extends AnyFlatSpec with Matchers {
 
   "DT Model accuracy" should "greater than 0.6" in {
     val DTacc = DT.Run()
-    DTacc should be > 0.6
+    DTacc should be > 0.7
   }
+
 }
