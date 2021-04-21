@@ -1,5 +1,4 @@
 # CSYE7200-Final-Project-Team6
-![GitHub top language]
 
 This project is designed as the final project of Northeastern University COE-CSYE7200 , taught by [Prof. Robin Hillyard](https://github.com/rchillyard).
 
