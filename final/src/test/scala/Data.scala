@@ -12,7 +12,6 @@ class Data extends AnyFlatSpec with Matchers {
     .master("local[2]")
     .getOrCreate()
 
-  behavior of "dataset"
   it should "data count accuracy" in {
     val finalData = getData.count()
     getData.createOrReplaceTempView("p")
