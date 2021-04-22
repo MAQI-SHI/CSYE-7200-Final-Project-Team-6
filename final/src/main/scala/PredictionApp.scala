@@ -5,6 +5,10 @@ import org.apache.spark.ml.feature.{IndexToString, StringIndexer, VectorAssemble
 import org.apache.spark.sql.SparkSession
 import scala.util.control.Breaks.{break, breakable}
 import java.util.Date
+
+/**
+ * this object is for start prediction App
+ */
 object PredictionApp extends App {
   /**
    * create spark object

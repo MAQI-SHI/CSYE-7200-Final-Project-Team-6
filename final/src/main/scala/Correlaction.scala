@@ -3,6 +3,9 @@ import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.mllib.stat.Statistics
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
+/**
+ * this object is for analyze the data correlation
+ */
 object Correlaction extends App {
   /**
    * create spark object
