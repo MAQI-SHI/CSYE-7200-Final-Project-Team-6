@@ -15,7 +15,11 @@ The goal of our project is to predict if someone will get stroke based on their 
 
 ## Methodology
 
+1. Read and Clean Data
 
+2. Stardandization and Correlation
+
+2. Use Smote Algorithm to Generate Minority Data
 
 ## How to Run
 
