@@ -5,7 +5,9 @@ import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 import org.apache.spark.ml.feature.{IndexToString, StringIndexer, VectorAssembler, VectorIndexer}
 import org.apache.spark.sql.SparkSession
 
-
+/**
+ * this object is for Decision Tree model
+ */
 object DT{
   def Run()= {
     /**
@@ -94,6 +96,8 @@ object DT{
       .setMetricName("accuracy")
 
     val isStroke = spark.sql("select * from p where indexedLabel = 1")
+    val right = spark.sql("select * from p where indexedLabel = 1 and prediction = 1 and sign = 'O'")
+    right.show(5)
     val notStroke = spark.sql("select * from p where indexedLabel = 0")
 
     /**

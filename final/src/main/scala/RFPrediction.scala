@@ -4,7 +4,9 @@ import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 import org.apache.spark.ml.feature.{IndexToString, StringIndexer, VectorAssembler, VectorIndexer}
 import org.apache.spark.sql.SparkSession
 
-
+/**
+ * this object is for Random Forest model using original data without smote
+ */
 object RFPrediction{
   def main(args: Array[String]): Unit = {
     //create spark object

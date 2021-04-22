@@ -4,7 +4,9 @@ import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 import org.apache.spark.ml.feature.{IndexToString, StringIndexer, VectorAssembler, VectorIndexer}
 import org.apache.spark.sql.SparkSession
 
-
+/**
+ * this object is for Random Forest model
+ */
 object RF2{
   def Run() = {
     /**

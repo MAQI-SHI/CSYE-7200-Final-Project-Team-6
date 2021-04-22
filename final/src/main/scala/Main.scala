@@ -1,3 +1,6 @@
+/**
+ * this object is to train and save model
+ */
 object Main extends App{
   /**
    * run 3 model and save the model
