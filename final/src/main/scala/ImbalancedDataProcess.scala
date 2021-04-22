@@ -7,8 +7,11 @@ import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 
 import scala.util.Random
 
+/**
+ * this object is for clean data and using smote algorithm to generate minority data
+ */
 object ImbalancedDataProcess extends App {
-def getData={
+  def getData={
     /**
      * create spark object
      */
