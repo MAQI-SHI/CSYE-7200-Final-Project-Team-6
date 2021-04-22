@@ -5,8 +5,9 @@ This project is the final project of Northeastern University CSYE7200 - Big Data
 
 ## TeamMember
 
-| [@Maqi Shi](https://github.com/MAQI-SHI) | 001057366 | shi.maq@norteastern.edu |
-| [@Yue Liu](https://github.com/YL-Hurry) | 001353606 | liu.yue7@northestern.edu |
+[@Maqi Shi](https://github.com/MAQI-SHI) 001057366 shi.maq@northeastern.edu
+
+[@Yue Liu](https://github.com/YL-Hurry) 001353606 liu.yue7@northestern.edu
 
 ## Abstract
 
