@@ -1,5 +1,5 @@
 # CSYE7200-Final-Project-Team-6
-![GitHub top language](https://img.shields.io/github/languages/top/MAQI-SHI/CSYE7200-Final-Project-Team-6.svg)
+![GitHub top language](https://img.shields.io/github/languages/top/MAQI-SHI/CSYE-7200-Final-Project-Team-6.svg)
 
 This project is the final project of Northeastern University CSYE7200 - Big Data System Engineering with Scala. The professor is [Prof. Robin Hillyard](https://github.com/rchillyard).
 
