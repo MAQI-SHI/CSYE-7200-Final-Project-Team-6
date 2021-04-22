@@ -103,7 +103,8 @@ object RF2{
     println(s"stroke accuracy = ${isStrokeAccuracy}")
     println(s"not stroke accuracy = ${notStrokeAccuracy}")
     println(s"accuracy = ${accuracy}")
-    accuracy
+    val acArray = Array(accuracy,isStrokeAccuracy,notStrokeAccuracy)
+    acArray
   }
 
 }
