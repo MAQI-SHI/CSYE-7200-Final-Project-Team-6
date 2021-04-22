@@ -65,12 +65,42 @@ object Correlaction extends App {
     val tenth= row.getAs[Double]("indexedSmoking")
     val eleth= row.getAs[Integer]("stroke")
     Vectors.dense(first.toDouble,second.toDouble,third.toDouble,fourth.toDouble,fifth.toDouble,sixth.toDouble,seventh
-      .toDouble,eighth.toDouble,ninth.toDouble,tenth.toDouble)
+      .toDouble,eighth.toDouble,ninth.toDouble,tenth.toDouble,eleth.toDouble)
   }
 
   /**
    * Compute correlation.
    */
   val correlMatrix = Statistics.corr(rddpreD)
-  println(correlMatrix.toString(10,Int.MaxValue))
+  //println(correlMatrix.toString(10,Int.MaxValue))
+  /**
+   * Convert correlation matrix to dataframe
+   */
+  import spark.implicits._
+  val cor = (0 until correlMatrix.numCols)
+  val df = correlMatrix.transpose
+    .colIter.toSeq
+    .map(_.toArray)
+    .toDF("arr")
+
+  val correlation = cor.foldLeft(df)((df, i) => df.withColumn("_" + (i+1), $"arr"(i)))
+    .drop("arr")
+    .withColumnRenamed("_1","indexedGender")
+    .withColumnRenamed("_2","age")
+    .withColumnRenamed("_3","hypertension")
+    .withColumnRenamed("_4","heart_disease")
+    .withColumnRenamed("_5","indexedMarried")
+    .withColumnRenamed("_6","indexedWork")
+    .withColumnRenamed("_7","indexedResidence")
+    .withColumnRenamed("_8","avg_glucose_level")
+    .withColumnRenamed("_9","bmi")
+    .withColumnRenamed("_10","indexedSmoking")
+    .withColumnRenamed("_11","stroke")
+  correlation.show(false)
+  correlation.createOrReplaceTempView("cor")
+  val correlation2 = spark.sql("SELECT CAST(indexedGender AS DECIMAL(10,2)), CAST(age AS DECIMAL(10,2))," +
+    "CAST(hypertension AS DECIMAL(10,2)), CAST(heart_disease AS DECIMAL(10,2)), CAST(indexedMarried AS DECIMAL(10,2))" +
+    ", CAST(indexedWork AS DECIMAL(10,2)), CAST(indexedResidence AS DECIMAL(10,2)), CAST(avg_glucose_level AS DECIMAL" +
+    "(10,2)),CAST(bmi AS DECIMAL(10,2)), CAST(indexedSmoking AS DECIMAL(10,2)),CAST(stroke AS DECIMAL(10,2)) FROM cor")
+  correlation2.show()
 }

@@ -59,6 +59,7 @@ def getData={
       .setOutputCols(Array("bmi2","agl2"))
       .setStrategy("mean")
     val data2 = imputer.fit(new_data).transform(new_data)
+
     val indexedSmoking = new StringIndexer()
       .setInputCol("smoking_status")
       .setOutputCol("indexedSmoking")
@@ -129,12 +130,12 @@ def getData={
     val newDF2 = spark.sql("SELECT stroke, CAST(age AS DECIMAL(10,0)) , CAST(hypertension AS DECIMAL(10,0)), " +
       "CAST(indexedWork AS DECIMAL(10,0)), CAST(agl2 AS DECIMAL(10,2)), CAST(bmi2 AS DECIMAL(10,2)), " +
       "CAST(indexedSmoking AS DECIMAL(10,0)), sign FROM newDF")
-
+    newDF2.show(5)
   /**
    * union new data with old data
    */
     val finalDF = inputDF.union(newDF2)
-    finalDF.show
+    finalDF.show(5)
 
     import scala.collection.JavaConversions._
   /**
