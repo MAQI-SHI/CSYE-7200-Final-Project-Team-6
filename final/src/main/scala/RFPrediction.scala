@@ -98,7 +98,7 @@ object RFPrediction{
     predictions.createOrReplaceTempView("p")
     //Calculate the prediction accuracy of stroke and non-stroke separately
     val a = spark.sql("select * from p where iLabel = 1")
-    a.show()
+    //a.show()
     val evaluator = new MulticlassClassificationEvaluator()
       .setLabelCol("iLabel")
       .setPredictionCol("prediction")
@@ -106,6 +106,7 @@ object RFPrediction{
 
     val accuracy = evaluator.evaluate(predictions)
     val b = evaluator.evaluate(a)
+    println("RandomForest result")
     println(s"stroke accuracy = ${b}")
     println(s"accuracy = ${accuracy}")
   }
