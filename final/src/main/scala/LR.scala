@@ -4,6 +4,9 @@ import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 import org.apache.spark.ml.feature.{StringIndexer, VectorAssembler}
 import org.apache.spark.sql.SparkSession
 
+/**
+ * this object is for Logistic Regression model
+ */
 object LR extends App{
   def Run()= {
     /**
